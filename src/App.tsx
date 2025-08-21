@@ -1,16 +1,15 @@
 import { Outlet } from "react-router"
+import CommonLayout from "./components/layout/CommonLayout";
 
 
 function App() {
  
 
   return (
-    <>
-      <h1>Welcome to My App</h1>
-      <p>This is a simple React application.</p>
+    <CommonLayout>
       <Outlet />
-    </>
-  )
+    </CommonLayout>
+  );
 }
 
 export default App
