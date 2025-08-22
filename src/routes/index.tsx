@@ -2,6 +2,7 @@ import App from "@/App";
 
 import About from "@/pages/About";
 import Contact from "@/pages/Contact";
+import FAQ from "@/pages/FAQ";
 import Features from "@/pages/Features";
 import Homepage from "@/pages/Homepage";
 import Login from "@/pages/Login";
@@ -28,6 +29,9 @@ export const router = createBrowserRouter([
       },
       { Component: Contact, 
         path: "contact" 
+      },
+      { Component: FAQ, 
+        path: "faq" 
       },
     ],
   },
