@@ -23,6 +23,7 @@ const navigationLinks = [
   { href: "/about", label: "About" },
   { href: "/features", label: "Features" },
   { href: "/faq", label: "FAQ" },
+  { href: "/contact", label: "Contact" },
 ]
 
 export default function Navbar() {
