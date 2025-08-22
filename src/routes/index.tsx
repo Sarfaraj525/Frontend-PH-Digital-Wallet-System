@@ -1,6 +1,8 @@
 import App from "@/App";
 
 import About from "@/pages/About";
+import Features from "@/pages/Features";
+import Homepage from "@/pages/Homepage";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import Verify from "@/pages/Verify";
@@ -13,9 +15,15 @@ export const router = createBrowserRouter([
     path: "/",
     children: [
       {
+        Component: Homepage,
+        index: true,
+      },
+      {
         Component: About,
         path: "about",
       },
+      { Component: Features, 
+        path: "features" },
     ],
   },
    {
