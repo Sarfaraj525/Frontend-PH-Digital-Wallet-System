@@ -16,14 +16,19 @@ import { ModeToggle } from "./ModeToggler"
 import { Link } from "react-router"
 import { authApi, useLogoutMutation, useUserInfoQuery,   } from "@/redux/features/auth/auth.api"
 import { useAppDispatch } from "@/redux/hook"
+import { role } from "@/constants/role"
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
-  { href: "/", label: "Home"},
-  { href: "/about", label: "About" },
-  { href: "/features", label: "Features" },
-  { href: "/faq", label: "FAQ" },
-  { href: "/contact", label: "Contact" },
+  { href: "/", label: "Home", role: "PUBLIC"},
+  { href: "/about", label: "About", role: "PUBLIC" },
+  { href: "/features", label: "Features", role: "PUBLIC" },
+  { href: "/faq", label: "FAQ", role: "PUBLIC" },
+  { href: "/contact", label: "Contact", role: "PUBLIC" },
+  { href: "/admin", label: "Dashboard", role: role.superAdmin },
+  { href: "/admin", label: "Dashboard", role: role.admin  },
+  { href: "/user", label: "Dashboard", role: role.user },
+  { href: "/agent", label: "Dashboard", role: role.agent },
 ]
 
 export default function Navbar() {
@@ -82,7 +87,9 @@ const handleLogout = async () => {
               <NavigationMenu className="max-w-none *:w-full">
                 <NavigationMenuList className="flex-col items-start gap-0 md:gap-2">
                   {navigationLinks.map((link, index) => (
-                    <NavigationMenuItem key={index} className="w-full">
+                    <>
+                    { link.role === "PUBLIC" && (
+                      <NavigationMenuItem key={index} className="w-full">
                       <NavigationMenuLink
                         asChild
                         className="py-1.5"
@@ -91,6 +98,19 @@ const handleLogout = async () => {
                         <Link to={link.href}>{link.label} </Link>
                       </NavigationMenuLink>
                     </NavigationMenuItem>
+                    )}
+                    { link.role === data?.data?.role && (
+                      <NavigationMenuItem key={index} className="w-full">
+                      <NavigationMenuLink
+                        asChild
+                        className="py-1.5"
+                       
+                      >
+                        <Link to={link.href}>{link.label} </Link>
+                      </NavigationMenuLink>
+                    </NavigationMenuItem>
+                    )}
+                    </>
                   ))}
                 </NavigationMenuList>
               </NavigationMenu>
@@ -102,22 +122,36 @@ const handleLogout = async () => {
               <Logo />
             </a>
             {/* Navigation menu */}
-            <NavigationMenu className="max-md:hidden">
-              <NavigationMenuList className="gap-2">
-                {navigationLinks.map((link, index) => (
-                  <NavigationMenuItem key={index}>
-                    <NavigationMenuLink asChild
-                     
-                      
-                      className="text-muted-foreground hover:text-primary py-1.5 font-medium"
-                    >
+           {/* Navigation menu */}
+<NavigationMenu className="max-md:hidden">
+  <NavigationMenuList className="gap-2">
+    {navigationLinks.map((link, index) => (
+      <>
+        {link.role === "PUBLIC" && (
+          <NavigationMenuItem key={index}>
+            <NavigationMenuLink
+              asChild
+              className="text-muted-foreground hover:text-primary py-1.5 font-medium"
+            >
+              <Link to={link.href}>{link.label}</Link>
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+        )}
+        {link.role === data?.data?.role && (
+          <NavigationMenuItem key={index}>
+            <NavigationMenuLink
+              asChild
+              className="text-muted-foreground hover:text-primary py-1.5 font-medium"
+            >
+              <Link to={link.href}>{link.label}</Link>
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+        )}
+      </>
+    ))}
+  </NavigationMenuList>
+</NavigationMenu>
 
-                      <Link to={link.href}>{link.label} </Link>
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-                ))}
-              </NavigationMenuList>
-            </NavigationMenu>
           </div>
         </div>
         {/* Right side */}
