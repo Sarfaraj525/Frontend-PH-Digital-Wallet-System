@@ -16,7 +16,10 @@ type WithdrawFormValues = z.infer<typeof withdrawSchema>;
 
 export default function Withdraw() {
   const [withdrawMoney, { isLoading }] = useWithdrawMoneyMutation();
-  const form = useForm<WithdrawFormValues>({ resolver: zodResolver(withdrawSchema) });
+  const form = useForm<WithdrawFormValues>({
+    resolver: zodResolver(withdrawSchema),
+    defaultValues: { amount: 10 },
+  });
 
   const onSubmit = async (values: WithdrawFormValues) => {
     try {

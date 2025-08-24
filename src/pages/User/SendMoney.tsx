@@ -5,9 +5,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useSendMoneyMutation } from "@/redux/features/wallet/wallet.api";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
 import { toast } from "sonner";
 
+// Zod schema
 const sendMoneySchema = z.object({
   recipient: z.string().min(3, "Recipient is required"),
   amount: z.number().min(1, "Amount must be greater than 0"),
@@ -17,12 +25,25 @@ type SendMoneyFormValues = z.infer<typeof sendMoneySchema>;
 
 export default function SendMoney() {
   const [sendMoney, { isLoading }] = useSendMoneyMutation();
-  const form = useForm<SendMoneyFormValues>({ resolver: zodResolver(sendMoneySchema) });
+
+  const form = useForm<SendMoneyFormValues>({
+    resolver: zodResolver(sendMoneySchema),
+    defaultValues: {
+      recipient: "",
+      amount: undefined,
+    },
+  });
 
   const onSubmit = async (values: SendMoneyFormValues) => {
     try {
-      await sendMoney(values).unwrap();
-      toast.success(`Sent ৳${values.amount} to ${values.recipient} successfully!`);
+      await sendMoney({
+        recipient: values.recipient,
+        amount: values.amount,
+      }).unwrap();
+
+      toast.success(
+        `Sent ৳${values.amount} to ${values.recipient} successfully!`
+      );
       form.reset();
     } catch (err: any) {
       toast.error(err?.data?.message || "Send Money failed!");
@@ -44,7 +65,12 @@ export default function SendMoney() {
                 <FormItem>
                   <FormLabel>Recipient (Phone/Email)</FormLabel>
                   <FormControl>
-                    <input type="text" {...field} className="input" />
+                    <input
+                      type="text"
+                      {...field}
+                      className="border px-2 py-1 rounded w-full"
+                      placeholder="Enter phone or email"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -57,7 +83,15 @@ export default function SendMoney() {
                 <FormItem>
                   <FormLabel>Amount (৳)</FormLabel>
                   <FormControl>
-                    <input type="number" {...field} className="input" />
+                    <input
+                      type="number"
+                      {...field}
+                      className="border px-2 py-1 rounded w-full"
+                      value={field.value ?? ""}
+                      onChange={(e) => field.onChange(Number(e.target.value))}
+                      min={1}
+                      placeholder="Enter amount"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

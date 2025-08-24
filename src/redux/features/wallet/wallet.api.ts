@@ -23,10 +23,10 @@ export const walletApi = baseApi.injectEndpoints({
       { success: boolean; message: string },
       { amount: number }
     >({
-      query: (body) => ({
+      query: (data) => ({
         url: "/wallet/me/add-money",
         method: "POST",
-        body,
+        data,
       }),
       invalidatesTags: ["USER"],
     }),
@@ -36,26 +36,30 @@ export const walletApi = baseApi.injectEndpoints({
       { success: boolean; message: string },
       { amount: number }
     >({
-      query: (body) => ({
+      query: (data) => ({
         url: "/wallet/me/withdraw",
         method: "POST",
-        body,
+        data,
       }),
       invalidatesTags: ["USER"],
     }),
 
     // ✅ Send money to another user
     sendMoney: builder.mutation<
-      { success: boolean; message: string },
-      { recipient: string; amount: number }
-    >({
-      query: (body) => ({
-        url: "/wallet/me/send-money",
-        method: "POST",
-        body,
-      }),
-      invalidatesTags: ["USER"],
-    }),
+  { success: boolean; message: string },
+  { recipient: string; amount: number }
+>({
+  query: (body) => ({
+    url: "/wallet/me/send-money",
+    method: "POST",
+    data: {
+      recipientPhone: body.recipient, // <-- map to backend field
+      amount: body.amount,
+    },
+  }),
+  invalidatesTags: ["USER"],
+}),
+
   }),
 });
 
