@@ -10,7 +10,7 @@ import { toast } from "sonner";
 
 const depositSchema = z.object({
   amount: z.number().min(10, "Minimum deposit is 10৳"),
-  agentId: z.string().min(3, "Agent ID is required"),
+  userEmail: z.string().email("Enter valid user email").optional(),
 });
 
 type DepositFormValues = z.infer<typeof depositSchema>;
@@ -20,12 +20,14 @@ export default function Deposit() {
 
   const form = useForm<DepositFormValues>({
     resolver: zodResolver(depositSchema),
-    defaultValues: { amount: 100, agentId: "" },
+    defaultValues: { amount: 100, userEmail: "" },
   });
 
   const onSubmit = async (values: DepositFormValues) => {
     try {
-      await depositMoney(values).unwrap();
+      // If email is empty, treat as self-deposit
+      const payload = values.userEmail ? values : { amount: values.amount };
+      await depositMoney(payload).unwrap();
       toast.success(`Deposited ৳${values.amount} successfully!`);
       form.reset();
     } catch (err: any) {
@@ -53,7 +55,7 @@ export default function Deposit() {
                       placeholder="Enter amount"
                       {...field}
                       onChange={(e) => field.onChange(Number(e.target.value))}
-                      className="input"
+                      className="input w-full border rounded p-2"
                     />
                   </FormControl>
                   <FormMessage />
@@ -61,13 +63,18 @@ export default function Deposit() {
               )}
             />
             <FormField
-              name="agentId"
+              name="userEmail"
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Agent ID</FormLabel>
+                  <FormLabel>User Email (Agent only)</FormLabel>
                   <FormControl>
-                    <input type="text" placeholder="Enter Agent ID" {...field} className="input" />
+                    <input
+                      type="email"
+                      placeholder="Enter user's email (optional)"
+                      {...field}
+                      className="input w-full border rounded p-2"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

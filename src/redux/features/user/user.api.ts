@@ -11,18 +11,20 @@ export const userApi = baseApi.injectEndpoints({
       providesTags: ["USER"],
     }),
 
-    // Update user profile
-    updateProfile: builder.mutation<
-      { success: boolean; message: string },
-      { name?: string; phone?: string; password?: string }
-    >({
-      query: (body) => ({
-        url: "/user/me",
-        method: "PUT",
-        data: body,
-      }),
-      invalidatesTags: ["USER"], // refresh the getUser query after update
-    }),
+updateProfile: builder.mutation<
+  { success: boolean; message: string },
+  { name?: string; phone?: string; password?: string }
+>({
+  query: (body) => ({
+    url: `/user/me`,
+    method: "PATCH",
+    body,
+  }),
+  invalidatesTags: ["USER"],
+}),
+
+
+
   }),
 });
 

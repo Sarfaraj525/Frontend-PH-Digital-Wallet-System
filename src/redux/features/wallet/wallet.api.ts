@@ -19,17 +19,18 @@ export const walletApi = baseApi.injectEndpoints({
     }),
 
     // ✅ Deposit money (User -> own wallet)
-    depositMoney: builder.mutation<
-      { success: boolean; message: string },
-      { amount: number }
-    >({
-      query: (data) => ({
-        url: "/wallet/me/add-money",
-        method: "POST",
-        data,
-      }),
-      invalidatesTags: ["USER"],
-    }),
+   depositMoney: builder.mutation<
+  { success: boolean; message: string },
+  { amount: number; userEmail?: string }
+>({
+  query: (body) => ({
+    url: body.userEmail ? "/transaction/cash-in" : "/wallet/me/add-money",
+    method: "POST",
+    body,
+  }),
+  invalidatesTags: ["USER"],
+}),
+
 
     // ✅ Withdraw money
     withdrawMoney: builder.mutation<
@@ -59,6 +60,8 @@ export const walletApi = baseApi.injectEndpoints({
   }),
   invalidatesTags: ["USER"],
 }),
+
+
 
   }),
 });
