@@ -11,8 +11,9 @@ export default function Footer() {
             </div>
 
             <p className="mt-4 max-w-xs text-muted-foreground">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Esse non
-              cupiditate quae nam molestias.
+              A secure and convenient way to manage your money. Send, receive,
+              and store funds anytime with our trusted digital wallet system.
+              Fast, reliable, and always at your fingertips.
             </p>
 
             <ul className="mt-8 flex gap-6">

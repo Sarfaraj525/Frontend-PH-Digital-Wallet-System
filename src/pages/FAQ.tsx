@@ -42,8 +42,8 @@ const FAQ: React.FC = () => {
       <Accordion type="single" collapsible className="space-y-4">
         {faqData.map((item, index) => (
           <AccordionItem key={index} value={`item-${index}`} className="border rounded-lg">
-            <AccordionTrigger className="text-lg font-medium">{item.question}</AccordionTrigger>
-            <AccordionContent className="text-muted-foreground">{item.answer}</AccordionContent>
+            <AccordionTrigger className="text-lg font-medium p-2">{item.question}</AccordionTrigger>
+            <AccordionContent className="text-muted-foreground p-2">{item.answer}</AccordionContent>
           </AccordionItem>
         ))}
       </Accordion>
