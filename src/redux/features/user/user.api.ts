@@ -13,7 +13,7 @@ export const userApi = baseApi.injectEndpoints({
 
 updateProfile: builder.mutation<
   { success: boolean; message: string },
-  { name?: string; phone?: string; password?: string }
+  Partial<{ name: string; phone: string; password: string }>
 >({
   query: (body) => ({
     url: `/user/me`,
@@ -22,6 +22,7 @@ updateProfile: builder.mutation<
   }),
   invalidatesTags: ["USER"],
 }),
+
 
 
 

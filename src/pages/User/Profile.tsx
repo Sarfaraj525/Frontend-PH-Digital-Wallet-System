@@ -11,9 +11,9 @@ import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "
 import { Button } from "@/components/ui/button";
 
 const profileSchema = z.object({
-  name: z.string().min(3),
-  phone: z.string().min(10),
-  password: z.string().min(6).optional(),
+  name: z.string().min(3, "Name must be at least 3 characters"),
+  phone: z.string().min(10, "Phone must be at least 10 digits"),
+  password: z.string().min(6, "Password must be at least 6 characters").optional(),
 });
 
 type ProfileFormValues = z.infer<typeof profileSchema>;
@@ -30,19 +30,28 @@ export default function Profile() {
     if (user) form.reset({ name: user.name, phone: user.phone, password: "" });
   }, [user]);
 
-  const onSubmit = async (values: ProfileFormValues) => {
-    try {
-      const payload: any = {};
-      if (values.name) payload.name = values.name;
-      if (values.phone) payload.phone = values.phone;
-      if (values.password) payload.password = values.password;
+const onSubmit = async (values: ProfileFormValues) => {
+  try {
+    // Remove empty strings or undefined
+    const payload = Object.fromEntries(
+      Object.entries(values).filter(
+        ([, val]) => val !== "" && val !== undefined
+      )
+    );
 
-      const res = await updateProfile(payload).unwrap();
-      toast.success(res.message || "Profile updated successfully!");
-    } catch (err: any) {
-      toast.error(err?.data?.message || "Update failed!");
+    if (Object.keys(payload).length === 0) {
+      toast.error("Please fill at least one field to update");
+      return;
     }
-  };
+
+    const res = await updateProfile(payload).unwrap();
+    toast.success(res.message || "Profile updated successfully!");
+  } catch (err: any) {
+    toast.error(err?.data?.message || "Update failed!");
+  }
+};
+
+
 
   if (isLoading) return <p>Loading...</p>;
 

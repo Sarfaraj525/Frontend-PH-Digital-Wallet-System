@@ -1,44 +1,19 @@
-
+import AgentDashboard from "@/pages/Agent/Dashboard";
+import CashIn from "@/pages/Agent/CashIn";
+import CashOut from "@/pages/Agent/CashOut";
+// import Transactions from "@/pages/Agent/Transactions"; // optional, create if you want separate page
+import Profile from "@/pages/Agent/Profile"; // create separate AgentProfile if needed
 import type { ISidebarItem } from "@/types";
 
-export const agentSidebarItems : ISidebarItem[] = [
-    {
-      title: "Dashboard",
-      items: [
-       
-        ],
-    },
-  
-  ];
-
-
-// import type { ISidebarItem } from "@/types";
-
-// export const agentSidebarItems: ISidebarItem[] = [
-//   {
-//     title: "Dashboard",
-//     items: [
-//       { title: "Overview", url: "/agent/dashboard", component: Dashboard },
-//     ],
-//   },
-//   {
-//     title: "Wallet Operations",
-//     items: [
-//       { title: "Add Money", url: "/agent/add-money", component: AddMoney },
-//       { title: "Withdraw Money", url: "/agent/withdraw", component: WithdrawMoney },
-//     ],
-//   },
-//   {
-//     title: "Transactions",
-//     items: [
-//       { title: "All Transactions", url: "/agent/transactions", component: AgentTransactions },
-//       { title: "Commission History", url: "/agent/commissions", component: CommissionHistory },
-//     ],
-//   },
-//   {
-//     title: "Profile",
-//     items: [
-//       { title: "Settings", url: "/agent/profile", component: Profile },
-//     ],
-//   },
-// ];
+export const agentSidebarItems: ISidebarItem[] = [
+  {
+    title: "Dashboard",
+    items: [
+      { title: "Overview", url: "/agent/dashboard", component: AgentDashboard },
+      { title: "Cash In", url: "/agent/cash-in", component: CashIn },
+      { title: "Cash Out", url: "/agent/cash-out", component: CashOut },
+      // { title: "Transactions", url: "/agent/transactions", component: Transactions },
+      { title: "Profile", url: "/agent/profile", component: Profile },
+    ],
+  },
+];

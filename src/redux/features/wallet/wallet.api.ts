@@ -19,17 +19,18 @@ export const walletApi = baseApi.injectEndpoints({
     }),
 
     // ✅ Deposit money (User -> own wallet)
-   depositMoney: builder.mutation<
+ depositMoney: builder.mutation<
   { success: boolean; message: string },
   { amount: number; userEmail?: string }
 >({
   query: (body) => ({
     url: body.userEmail ? "/transaction/cash-in" : "/wallet/me/add-money",
     method: "POST",
-    body,
+    data: body,
   }),
   invalidatesTags: ["USER"],
 }),
+
 
 
     // ✅ Withdraw money

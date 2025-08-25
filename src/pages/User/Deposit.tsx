@@ -7,26 +7,33 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { toast } from "sonner";
+// import { useAppSelector } from "@/redux/hooks";
 
 const depositSchema = z.object({
   amount: z.number().min(10, "Minimum deposit is 10৳"),
-  userEmail: z.string().email("Enter valid user email").optional(),
+  agentEmail: z.string().email("Enter valid agent email").optional(),
 });
 
 type DepositFormValues = z.infer<typeof depositSchema>;
 
 export default function Deposit() {
   const [depositMoney, { isLoading }] = useDepositMoneyMutation();
+  // get logged-in user (removed unused 'user' variable)
 
   const form = useForm<DepositFormValues>({
     resolver: zodResolver(depositSchema),
-    defaultValues: { amount: 100, userEmail: "" },
+    defaultValues: { amount: 100, agentEmail: "" },
   });
 
   const onSubmit = async (values: DepositFormValues) => {
     try {
-      // If email is empty, treat as self-deposit
-      const payload = values.userEmail ? values : { amount: values.amount };
+      // Always deposit to own wallet
+      // If agentEmail is provided, send it as a reference for backend
+      const payload: any = { amount: values.amount };
+      if (values.agentEmail) {
+        payload.agentEmail = values.agentEmail;
+      }
+
       await depositMoney(payload).unwrap();
       toast.success(`Deposited ৳${values.amount} successfully!`);
       form.reset();
@@ -63,15 +70,15 @@ export default function Deposit() {
               )}
             />
             <FormField
-              name="userEmail"
+              name="agentEmail"
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>User Email (Agent only)</FormLabel>
+                  <FormLabel>Agent Email</FormLabel>
                   <FormControl>
                     <input
                       type="email"
-                      placeholder="Enter user's email (optional)"
+                      placeholder="Enter agent's email"
                       {...field}
                       className="input w-full border rounded p-2"
                     />
