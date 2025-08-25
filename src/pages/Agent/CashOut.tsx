@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useCashOutMutation, useGetAgentSummaryQuery, useGetAgentTransactionsQuery } from "@/redux/features/agent/agent.api";
+import { toast } from "sonner";
 
 const CashOut = () => {
   const [email, setEmail] = useState("");
@@ -11,16 +12,17 @@ const CashOut = () => {
   const { refetch: refetchTxns } = useGetAgentTransactionsQuery();
 
   const handleCashOut = async () => {
-    if (!email || !amount) return alert("Enter email and amount");
+    if (!email || !amount) return toast.error("Enter email and amount");
+
     try {
       await cashOut({ userEmail: email, amount }).unwrap();
-      alert("Cash-out successful");
+      toast.success("Cash-out successful");
       setEmail("");
       setAmount(0);
       refetchSummary();
       refetchTxns();
     } catch (error: any) {
-      alert(error.data?.message || error.message);
+      toast.error(error.data?.message || error.message);
     }
   };
 

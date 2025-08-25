@@ -2,7 +2,7 @@ import AgentDashboard from "@/pages/Agent/Dashboard";
 import CashIn from "@/pages/Agent/CashIn";
 import CashOut from "@/pages/Agent/CashOut";
 // import Transactions from "@/pages/Agent/Transactions"; // optional, create if you want separate page
-import Profile from "@/pages/Agent/Profile"; // create separate AgentProfile if needed
+import Profile from "@/pages/Agent/AgentProfile"; // create separate AgentProfile if needed
 import type { ISidebarItem } from "@/types";
 import AgentTransactions from "@/pages/Agent/AgentTransactions";
 
