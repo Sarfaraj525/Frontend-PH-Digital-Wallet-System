@@ -93,10 +93,12 @@ export const agentApi = createApi({
     }),
 
     // Get agent transactions
-    getAgentTransactions: builder.query<any, void>({
-      query: () => ({ url: "/transactions/agent", method: "GET" }),
-      providesTags: ["Transaction"],
-    }),
+   // Get agent transactions (paginated if needed)
+getAgentTransactions: builder.query<any, void>({
+  query: () => ({ url: "/transactions/agent", method: "GET" }), // <-- dedicated agent endpoint
+  providesTags: ["Transaction"],
+}),
+
 
     // Agent summary (cash-in & cash-out)
     getAgentSummary: builder.query<any, void>({
